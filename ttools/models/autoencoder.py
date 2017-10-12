@@ -9,14 +9,13 @@ class Autoencoder(Model):
         super().__init__(**kwargs)
 
     def build_graph(self):
-        with tf.variable_scope(self.name()):
-            self.encode_decode()
-            image_summary('input_output', inputs=self.input_data,
-                          outputs=tf.reshape(self.predictions, self.input_data.get_shape()))
-            tf.summary.scalar('cost', self.cost)
-            if self.mode == 'train':
-                self._build_train_op()
-            self.summaries = tf.summary.merge_all()
+        self.encode_decode()
+        image_summary('input_output', inputs=self.input_data,
+                      outputs=tf.reshape(self.predictions, self.input_data.get_shape()))
+        tf.summary.scalar('cost', self.cost)
+        if self.mode == 'train':
+            self._build_train_op()
+        self.summaries = tf.summary.merge_all()
 
     def encode(self, x):
         return
@@ -27,8 +26,9 @@ class Autoencoder(Model):
     def encode_decode(self):
         self.shapes = []
         self.global_step = tf.contrib.framework.get_or_create_global_step()
-        z = self.encode(self.input_data)
-        output = self.decode(z)
+        with tf.variable_scope(self.name()):
+            z = self.encode(self.input_data)
+            output = self.decode(z)
 
         self.predictions = output
         self.compute_cost()
@@ -71,6 +71,15 @@ class Autoencoder(Model):
 
         for _ in range(1, self.hps['num_steps'] + 2):
             self.sess.run(self.train_op)
-
-
+    
+    def reconstruct(self, input_data, save_path=None):
+        self.mode = 'eval'
+        self.input_data = input_data
+        self.encode_decode()
+        if save_path is not None:
+            self.restore_from_checkpoint(model_path=save_path)
+        else:
+            self.restore_from_checkpoint()
+        
+        return tf.reshape(self.predictions, input_data.get_shape())
 

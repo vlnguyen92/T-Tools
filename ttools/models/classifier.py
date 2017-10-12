@@ -35,6 +35,8 @@ class Classifier(Model):
         self.cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=self.logits,
                                                                            labels=self.input_labels))
 
+        tf.summary.scalar('Cost', self.cost)
+
     def _build_model(self, *args):
         pass
 

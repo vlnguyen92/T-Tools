@@ -101,6 +101,8 @@ class Model(object):
         prev_vars = [var_name for var_name, _ in tf.contrib.framework.list_variables(model_path)]
         restore_map = {var.op.name.replace(exclude_scope, ''): var for var in curr_vars
                        if var.op.name.replace(exclude_scope, '') in prev_vars}
+        import pdb
+        pdb.set_trace()
 
         tf.contrib.framework.init_from_checkpoint(model_path, restore_map)
 

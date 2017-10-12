@@ -4,7 +4,7 @@ import tensorflow as tf
 
 class LeNet(Classifier):
 
-    def __init__(self, optimizer='adam', lrn_rate=0.01, **kwargs):
+    def __init__(self, optimizer='adam', lrn_rate=0.001, **kwargs):
         super().__init__(optimizer=optimizer,
                          lrn_rate=lrn_rate,
                          **kwargs)

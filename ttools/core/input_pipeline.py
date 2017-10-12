@@ -37,7 +37,8 @@ class InputPipeline(object):
     def _is_new_data(self, dataset):
         # TODO: Change this instead of hard-coded path
         all_files = list(map(os.path.splitext, os.listdir(os.path.join(ROOT_DIR, 'datasets'))))
-        all_datasets = [file[0] for file in all_files][2:]
+        all_datasets = [file[0] for file in all_files if (file[1] == '.py') and
+                (file[0] != '__init__')]
 
         data_path = self._data_set.get_data_dir()
 
