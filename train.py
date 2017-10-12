@@ -5,6 +5,7 @@ import tensorflow as tf
 FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string('dataset', 'Cifar10', 'Choose your dataset')
 tf.app.flags.DEFINE_string('model', 'ResNet', 'Choose your model')
+tf.app.flags.DEFINE_string('mode', 'train', 'Train or eval')
 tf.app.flags.DEFINE_integer('num_steps', 1000, 'How many train steps')
 tf.app.flags.DEFINE_integer('batch_size', 128, 'batch size')
 tf.app.flags.DEFINE_integer('num_gpus', 1,

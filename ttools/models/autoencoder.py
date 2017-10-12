@@ -13,6 +13,7 @@ class Autoencoder(Model):
             self.encode_decode()
             image_summary('input_output', inputs=self.input_data,
                           outputs=tf.reshape(self.predictions, self.input_data.get_shape()))
+            tf.summary.scalar('cost', self.cost)
             if self.mode == 'train':
                 self._build_train_op()
             self.summaries = tf.summary.merge_all()
