@@ -83,6 +83,9 @@ class Classifier(Model):
         init_op = tf.group(tf.global_variables_initializer(), tf.local_variables_initializer())
 
         with tf.Session(config=tf.ConfigProto(allow_soft_placement=True)) as sess:
+            summary_writer = tf.summary.FileWriter('./summary',
+                    graph=sess.graph) 
+
             sess.run(init_op)
             coord = tf.train.Coordinator()
             threads = tf.train.start_queue_runners(coord=coord)

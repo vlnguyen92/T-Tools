@@ -41,35 +41,36 @@ def main(_):
         
         recon = ae_instance.reconstruct(test_images)
 
-        image_summary('test_attacked_input_output', inputs=test_images, outputs=recon, grid_size=[5, 5])
-        summary_op = tf.summary.merge_all()
-        summary_writer = tf.summary.FileWriter('./summary')
-
+        
         if FLAGS.mode == 'train':
             model_instance.train(input_data=train_images, input_labels=train_labels)
         elif FLAGS.mode == 'eval':
-            init_op = tf.group(tf.global_variables_initializer(), tf.local_variables_initializer())
+            #image_summary('test_attacked_input_output', inputs=test_images, outputs=recon, grid_size=[5, 5])
+            #summary_op = tf.summary.merge_all()
+            #summary_writer = tf.summary.FileWriter('./summary', graph =
+            #        tf.get_default_graph())
+            #init_op = tf.group(tf.global_variables_initializer(), tf.local_variables_initializer())
 
-            with tf.Session(config=tf.ConfigProto(allow_soft_placement=True)) as sess:
-                sess.run(init_op)
-                coord = tf.train.Coordinator()
-                threads = tf.train.start_queue_runners(coord=coord)
+            #with tf.Session(config=tf.ConfigProto(allow_soft_placement=True)) as sess:
+            #    sess.run(init_op)
+            #    coord = tf.train.Coordinator()
+            #    threads = tf.train.start_queue_runners(coord=coord)
 
-                step = 1
-                avg_acc = 0.0
-                try:
-                    for step in range(10):
-                        summary = sess.run(summary_op)
-                        summary_writer.add_summary(summary, step)
-                        # plt.imshow(train_imgs[1][:, :, 0], cmap='gray')
-                        # plt.show()
-                except Exception as e:
-                    coord.request_stop(e)
-                finally:
-                    coord.request_stop()
-                coord.join(threads=threads)
-                sess.close()
-                #model_instance.evaluate(recon, test_labels)
+            #    step = 1
+            #    avg_acc = 0.0
+            #    try:
+            #        for step in range(10):
+            #            summary = sess.run(summary_op)
+            #            summary_writer.add_summary(summary, step)
+            #            # plt.imshow(train_imgs[1][:, :, 0], cmap='gray')
+            #            # plt.show()
+            #    except Exception as e:
+            #        coord.request_stop(e)
+            #    finally:
+            #        coord.request_stop()
+            #    coord.join(threads=threads)
+            #    sess.close()
+            model_instance.evaluate(recon, test_labels)
 
 if __name__ == '__main__':
     tf.logging.set_verbosity(tf.logging.INFO)
